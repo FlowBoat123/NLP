@@ -17,7 +17,25 @@ The `pretrain/` folder includes:
 
 ## Transformer Experiments
 
-The `transformer/` folder contains the Transformer-based implementation used as the second modeling direction in the report.
+The `transformer/` folder contains a from-scratch Transformer-style sequence-to-sequence summarization system. It is configured through `transformer/config.py`, where the dataset paths, SentencePiece vocabulary size, model size, training hyperparameters, checkpoint paths, and beam-search settings are defined.
+
+Main components:
+
+- `data/tokenizer.py`: trains or loads a SentencePiece unigram tokenizer from the training split.
+- `data/dataset.py` and `data/dataloader.py`: build PyTorch datasets and padded batches for source-target summarization pairs.
+- `modeling/models/seq2seq.py`: implements the encoder-decoder summarization model with shared token embeddings, RMSNorm, stacked encoder/decoder blocks, and beam-search decoding.
+- `training/train.py` and `training/trainer.py`: train the model with AdamW, cross-entropy loss, warmup scheduling, checkpoint saving, and validation tracking.
+- `evaluation/evaluate.py`: generates summaries on the test split and reports ROUGE, BLEU, and BERTScore.
+
+Typical commands:
+
+```bash
+cd transformer
+bash scripts/train.sh
+bash scripts/eval.sh
+```
+
+Before running, update `config.py` with the train/dev/test CSV paths and the SentencePiece model path.
 
 ## Notes
 
